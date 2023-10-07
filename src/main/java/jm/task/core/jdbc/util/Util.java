@@ -1,6 +1,16 @@
 package jm.task.core.jdbc.util;
 
 import java.sql.*;
+import java.util.Properties;
+
+import jm.task.core.jdbc.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.service.ServiceRegistry;
+
 
 public class Util {
 
@@ -8,17 +18,27 @@ public class Util {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
-    private Connection connection;
 
-    public Util() {
+    public Connection getConnection() {
         try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Connection getConnection() {
-        return connection;
+
+    public SessionFactory getSession() {
+        Properties prop= new Properties();
+
+        prop.setProperty("hibernate.connection.url", URL);
+        prop.setProperty("hibernate.connection.username", USERNAME);
+        prop.setProperty("hibernate.connection.password", PASSWORD);
+        prop.setProperty("hibernate.connection.characterEncoding", "utf8");
+        prop.setProperty("hibernate.current_session_context_class", "thread");
+
+        SessionFactory sessionFactory = new Configuration().addProperties(prop).addAnnotatedClass(User.class).buildSessionFactory();
+
+        return sessionFactory;
     }
 }

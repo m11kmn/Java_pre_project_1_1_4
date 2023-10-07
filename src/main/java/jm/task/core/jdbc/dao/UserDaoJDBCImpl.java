@@ -11,19 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+    private Util util = new Util();
+
     public UserDaoJDBCImpl() {
 
     }
 
-    private Util util = new Util();
-
     public void createUsersTable() {
         try (Statement statement = util.getConnection().createStatement()) {
-            String quary = "CREATE TABLE `my_study_db`.`users` (\n" +
-                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `name` VARCHAR(45) NULL,\n" +
-                    "  `lastName` VARCHAR(45) NULL,\n" +
-                    "  `age` INT NULL,\n" +
+            String quary = "CREATE TABLE my_study_db.users (\n" +
+                    "  id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  name VARCHAR(45) NULL,\n" +
+                    "  lastName VARCHAR(45) NULL,\n" +
+                    "  age INT NULL,\n" +
                     "  PRIMARY KEY (`id`))\n" +
                     "ENGINE = InnoDB\n" +
                     "DEFAULT CHARACTER SET = utf8;";
