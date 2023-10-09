@@ -19,7 +19,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         try (Statement statement = util.getConnection().createStatement()) {
-            String quary = "CREATE TABLE my_study_db.users (\n" +
+            final String QUERY = "CREATE TABLE my_study_db.users (\n" +
                     "  id INT NOT NULL AUTO_INCREMENT,\n" +
                     "  name VARCHAR(45) NULL,\n" +
                     "  lastName VARCHAR(45) NULL,\n" +
@@ -27,7 +27,7 @@ public class UserDaoJDBCImpl implements UserDao {
                     "  PRIMARY KEY (`id`))\n" +
                     "ENGINE = InnoDB\n" +
                     "DEFAULT CHARACTER SET = utf8;";
-            statement.execute(quary);
+            statement.execute(QUERY);
         } catch (SQLException e) {
         }
 
@@ -35,16 +35,16 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         try (Statement statement = util.getConnection().createStatement()) {
-            String quary = "DROP TABLE users";
-            statement.executeUpdate(quary);
+            final String QUERY = "DROP TABLE users";
+            statement.executeUpdate(QUERY);
         } catch (SQLException e) {
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String quary = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
+        final String QUERY = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = util.getConnection().prepareStatement(quary)) {
+        try (PreparedStatement preparedStatement = util.getConnection().prepareStatement(QUERY)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
@@ -57,8 +57,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         try (Statement statement = util.getConnection().createStatement()) {
-            String quary = String.format("DELETE FROM users WHERE id = %d", id);
-            statement.executeUpdate(quary);
+            final String QUERY = String.format("DELETE FROM users WHERE id = %d", id);
+            statement.executeUpdate(QUERY);
         } catch (SQLException e) {
         }
     }
@@ -67,8 +67,8 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> users = new ArrayList<>();
 
         try (Statement statement = util.getConnection().createStatement()) {
-            String quary = "SELECT * FROM users";
-            ResultSet resultSet = statement.executeQuery(quary);
+            final String QUERY = "SELECT * FROM users";
+            ResultSet resultSet = statement.executeQuery(QUERY);
 
             while (resultSet.next()) {
                 User user = new User();
@@ -85,8 +85,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() {
         try (Statement statement = util.getConnection().createStatement()) {
-            String quary = "DELETE FROM users";
-            statement.executeUpdate(quary);
+            final String QUERY = "DELETE FROM users";
+            statement.executeUpdate(QUERY);
         } catch (SQLException e) {
         }
     }

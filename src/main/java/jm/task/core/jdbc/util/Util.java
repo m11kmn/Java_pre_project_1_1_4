@@ -27,18 +27,18 @@ public class Util {
         }
     }
 
-
-    public SessionFactory getSession() {
-        Properties prop= new Properties();
-
-        prop.setProperty("hibernate.connection.url", URL);
-        prop.setProperty("hibernate.connection.username", USERNAME);
-        prop.setProperty("hibernate.connection.password", PASSWORD);
-        prop.setProperty("hibernate.connection.characterEncoding", "utf8");
-        prop.setProperty("hibernate.current_session_context_class", "thread");
-
-        SessionFactory sessionFactory = new Configuration().addProperties(prop).addAnnotatedClass(User.class).buildSessionFactory();
-
+    private static SessionFactory sessionFactory;
+    public static SessionFactory getSessionFactory() {
+        if(sessionFactory == null){
+            Properties prop= new Properties();
+            prop.setProperty("hibernate.connection.url", URL);
+            prop.setProperty("hibernate.connection.username", USERNAME);
+            prop.setProperty("hibernate.connection.password", PASSWORD);
+            prop.setProperty("hibernate.connection.characterEncoding", "utf8");
+            prop.setProperty("hibernate.current_session_context_class", "thread");
+            sessionFactory = new Configuration().addProperties(prop).addAnnotatedClass(User.class).buildSessionFactory();
+        }
         return sessionFactory;
     }
+
 }
