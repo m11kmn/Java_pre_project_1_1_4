@@ -9,8 +9,6 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
->>>>>>> JDBC_2.0
-
     public UserDaoJDBCImpl() {}
 
 
