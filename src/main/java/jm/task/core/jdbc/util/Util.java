@@ -19,13 +19,14 @@ public class Util {
     private static final String PASSWORD = "root";
 
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     private static SessionFactory sessionFactory;
     public static SessionFactory getSessionFactory() {
@@ -40,5 +41,4 @@ public class Util {
         }
         return sessionFactory;
     }
-
 }
