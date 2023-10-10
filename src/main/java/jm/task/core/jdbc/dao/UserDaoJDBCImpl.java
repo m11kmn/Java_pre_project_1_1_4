@@ -9,6 +9,16 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
+    private static final String CREATEQUERY = "CREATE TABLE `my_study_db`.`users` (\n" +
+            "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+            "  `name` VARCHAR(45) NULL,\n" +
+            "  `lastName` VARCHAR(45) NULL,\n" +
+            "  `age` INT NULL,\n" +
+            "  PRIMARY KEY (`id`))\n" +
+            "ENGINE = InnoDB\n" +
+            "DEFAULT CHARACTER SET = utf8;";
+    private static final String SAVEQUERY = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
+
     public UserDaoJDBCImpl() {}
 
 
@@ -16,15 +26,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
-            final String QUERY = "CREATE TABLE `my_study_db`.`users` (\n" +
-                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `name` VARCHAR(45) NULL,\n" +
-                    "  `lastName` VARCHAR(45) NULL,\n" +
-                    "  `age` INT NULL,\n" +
-                    "  PRIMARY KEY (`id`))\n" +
-                    "ENGINE = InnoDB\n" +
-                    "DEFAULT CHARACTER SET = utf8;";
-            statement.execute(QUERY);
+            statement.execute(CREATEQUERY);
         } catch (SQLException e) {
         }
 
@@ -38,8 +40,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        final String quary = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(quary)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SAVEQUERY)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
@@ -51,8 +52,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        final String quary = "DELETE FROM users WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(quary)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id = ?")) {
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
