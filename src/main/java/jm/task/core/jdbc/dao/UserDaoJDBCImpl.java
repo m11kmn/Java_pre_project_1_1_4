@@ -8,25 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-
-    private static final String CREATEQUERY = "CREATE TABLE `my_study_db`.`users` (\n" +
-            "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-            "  `name` VARCHAR(45) NULL,\n" +
-            "  `lastName` VARCHAR(45) NULL,\n" +
-            "  `age` INT NULL,\n" +
-            "  PRIMARY KEY (`id`))\n" +
-            "ENGINE = InnoDB\n" +
-            "DEFAULT CHARACTER SET = utf8;";
-    private static final String SAVEQUERY = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
-
     public UserDaoJDBCImpl() {}
-
 
     private final Connection connection = Util.getConnection();
 
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
-            statement.execute(CREATEQUERY);
+            statement.execute("CREATE TABLE `my_study_db`.`users` (\n" +
+                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `name` VARCHAR(45) NULL,\n" +
+                    "  `lastName` VARCHAR(45) NULL,\n" +
+                    "  `age` INT NULL,\n" +
+                    "  PRIMARY KEY (`id`))\n" +
+                    "ENGINE = InnoDB\n" +
+                    "DEFAULT CHARACTER SET = utf8;");
         } catch (SQLException e) {
         }
 
@@ -40,7 +35,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SAVEQUERY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)")) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
